@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: w9-api:1 # From the app/app.py
+          image: w9-api:1
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -53,8 +53,7 @@ metadata:
     app: api
 spec:
   selector:
-    matchLabels:
-      app: api
+    app: api
   ports:
     - name: http
       port: 8080
