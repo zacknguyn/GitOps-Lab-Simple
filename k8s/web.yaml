@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: nginx:1.27
+          image: nginx:stable-alpine
           envFrom:
             - configMapRef:
                 name: web-config

@@ -4,6 +4,7 @@ metadata:
   name: web
   namespace: argocd
 spec:
+  project: default
   source:
     repoURL: https://github.com/zacknguyn/GitOps-Lab-Simple.git
     targetRevision: HEAD
