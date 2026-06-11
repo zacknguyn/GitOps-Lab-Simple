@@ -13,5 +13,5 @@ spec:
         prometheus:
           address: http://kube-prometheus-stack-prometheus.monitoring:9090
           query: |
-            avg(1 - (sum(rate(flask_http_request_total{status=~"5..",namespace="demo"}[2m]))
-                 / sum(rate(flask_http_request_total{namespace="demo"}[2m])))) or 1
+            (1 - (sum(rate(flask_http_request_total{status=~"5..",namespace="demo"}[2m]))
+                 / sum(rate(flask_http_request_total{namespace="demo"}[2m])))) or vector(1)
