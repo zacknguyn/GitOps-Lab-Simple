@@ -41,6 +41,10 @@ spec:
         - pause:
             duration: 2m
         - setWeight: 100
+      analysis:
+        templates:
+          - templateName: error-rate
+        startingStep: 0
 ---
 apiVersion: v1
 kind: Service
