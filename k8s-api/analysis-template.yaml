@@ -8,7 +8,7 @@ spec:
     - name: success-rate
       initialDelay: 120s
       interval: 30s
-      successCondition: len(result) > 0 ? result[0] >= 0.95 : false
+      successCondition: "len(result) > 0 ? result[0] >= 0.95 : false"
       failureLimit: 3
       provider:
         prometheus:
