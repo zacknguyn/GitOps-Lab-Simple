@@ -25,11 +25,11 @@ spec:
     spec:
       containers:
         - name: w9-api
-          image: w9-api:1
+          image: w9-api:2
           imagePullPolicy: IfNotPresent
           env:
             - name: VERSION
-              value: "v1"
+              value: "v2"
           ports:
             - containerPort: 5000
               name: http
