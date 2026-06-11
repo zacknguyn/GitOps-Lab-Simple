@@ -7,8 +7,8 @@ from prometheus_flask_exporter import PrometheusMetrics
 app = Flask(__name__)
 PrometheusMetrics(app)
 
-ERR = float(os.getenv("ERROR_RATE", "0.1"))
-VER = os.getenv("VERSION", "v3-broken")
+ERR = float(os.getenv("ERROR_RATE", "0"))
+VER = os.getenv("VERSION", "v1")
 
 
 @app.get("/")
