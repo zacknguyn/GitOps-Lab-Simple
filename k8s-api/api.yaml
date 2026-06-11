@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: w9-api:1
+          image: w9-api:2
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -26,7 +26,7 @@ spec:
             - name: ERROR_RATE
               value: "0"
             - name: VERSION
-              value: "1"
+              value: "2"
           readinessProbe:
             httpGet:
               path: /healthz
@@ -42,7 +42,7 @@ spec:
             duration: 2m
         - setWeight: 100
 ---
-apiVersion: v2
+apiVersion: v1
 kind: Service
 metadata:
   name: api
