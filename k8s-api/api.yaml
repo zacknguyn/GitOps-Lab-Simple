@@ -35,14 +35,12 @@ spec:
     canary:
       steps:
         - setWeight: 25
-          pause:
+        - pause:
             duration: 2m
         - setWeight: 50
-          pause:
+        - pause:
             duration: 2m
         - setWeight: 100
-          pause:
-            duration: 2m
 ---
 apiVersion: v1
 kind: Service
