@@ -11,6 +11,8 @@ spec:
     chart: kube-prometheus-stack
     helm:
       values: |
+        crds:
+          enabled: false
         grafana:
           adminPassword: admin
           service:
