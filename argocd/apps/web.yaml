@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: web
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://github.com/<USER>/gitops-lab.git
+    targetRevision: HEAD
+    path: cloud/w9/day-d/gitops-lab-anhSang/k8s/
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
