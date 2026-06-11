@@ -12,6 +12,8 @@ spec:
     helm:
       values: |
         prometheus:
+          service:
+            type: NodePort
           prometheusSpec:
             serviceMonitorSelectorNilUsesHelmValues: false
   destination:
