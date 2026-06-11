@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: api-slo
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: api-slo
+      rules:
+        - record: slo:success_rate:5m
+          expr: |
+            1 - (sum(rate(flask_http_request_total{status=~"5..",namespace="demo"}[5m]))
+                 / sum(rate(flask_http_request_total{namespace="demo"}[5m])))
+        - alert: APISuccessRateLow
+          expr: slo:success_rate:5m < 0.95
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: API success rate is below 95%
+            description: |
+              Success rate for the demo API is {{ $value | humanizePercentage }}.
+              Expected at least 95%.
