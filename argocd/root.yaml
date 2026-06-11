@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   source:
-    repoURL: https://github.com/<USER>/gitops-lab.git
+    repoURL: https://github.com/zacknguyn/GitOps-Lab-Simple.git
     targetRevision: HEAD
     path: argocd/apps
   destination:

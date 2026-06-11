@@ -5,9 +5,9 @@ metadata:
   namespace: argocd
 spec:
   source:
-    repoURL: https://github.com/<USER>/gitops-lab.git
+    repoURL: https://github.com/zacknguyn/GitOps-Lab-Simple.git
     targetRevision: HEAD
-    path: cloud/w9/day-d/gitops-lab-anhSang/k8s/
+    path: k8s/
   destination:
     server: https://kubernetes.default.svc
     namespace: demo
