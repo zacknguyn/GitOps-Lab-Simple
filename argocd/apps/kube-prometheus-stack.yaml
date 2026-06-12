@@ -25,7 +25,7 @@ spec:
               smtp_smarthost: smtp.gmail.com:587
               smtp_from: quangphongnguyen147@gmail.com
               smtp_auth_username: quangphongnguyen147@gmail.com
-              smtp_auth_password: egkvbxkfztxtwfit
+              smtp_auth_password: wewatchf1example
             inhibit_rules:
               - equal: ["namespace", "alertname"]
                 source_matchers: ["severity = critical"]
