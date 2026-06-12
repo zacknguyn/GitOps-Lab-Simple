@@ -11,8 +11,8 @@ spec:
       rules:
         - record: slo:success_rate:5m
           expr: |
-            1 - (sum(rate(flask_http_request_total{status=~"5..",namespace="demo"}[5m]))
-                 / sum(rate(flask_http_request_total{namespace="demo"}[5m])))
+            1 - ((sum(rate(flask_http_request_total{status=~"5..",namespace="demo"}[5m])) or vector(0))
+                 / (sum(rate(flask_http_request_total{namespace="demo"}[5m])) or vector(0)))
         - alert: APISuccessRateLow
           expr: slo:success_rate:5m < 0.95
           for: 2m

@@ -9,6 +9,64 @@ minikube ip -p w9
 ```
 If `kubectl get nodes` shows `w9` Ready, you're good.
 
+## 0.5 Recovery After Shutdown
+
+If your laptop shuts down without stopping minikuke, the cluster is recoverable:
+
+```bash
+# Start the existing profile (reuses the same VM, images preserved)
+minikube start -p w9
+
+# Set docker env for image builds
+eval $(minikube -p w9 docker-env)
+```
+
+Wait ~1 minute, then check pods:
+
+```bash
+# Watch until everything stabilizes
+kubectl get pods -A
+```
+
+**Common issues:**
+
+- **Frontend pods crash** with `host not found in upstream "expense-tracker-backend"` — nginx resolves DNS at startup and fails if CoreDNS isn't ready yet. Delete them to force a restart (DNS will be up by then):
+  ```bash
+  kubectl delete pods -n expense-tracker -l app=expense-tracker-frontend
+  ```
+- **ArgoCD, Grafana, or Prometheus pods stuck in Error** — same DNS race. Delete to restart:
+  ```bash
+  kubectl delete pods -n argocd --all
+  kubectl delete pods -n monitoring --all
+  ```
+- **94% disk warning** — run `docker system prune` if you see "nearly out of disk space" during start.
+
+All pods should settle to Running within 2 minutes.
+
+**Restore port-forwards:**
+
+```bash
+# ArgoCD
+kubectl port-forward -n argocd svc/argocd-server 8080:443 &
+echo "https://localhost:8080  admin / <get password below>"
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d; echo
+
+# Grafana
+kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3001:80 &
+echo "http://localhost:3001  admin / prom-operator"
+
+# AlertManager
+kubectl port-forward -n monitoring svc/kube-prometheus-stack-alertmanager 9093:9093 &
+echo "http://localhost:9093"
+```
+
+**Check images are intact:**
+
+```bash
+minikube image ls -p w9 | grep -E "w9-api|expense-tracker"
+```
+Should list `w9-api:1`, `expense-tracker-backend:1`, `expense-tracker-frontend:1`.
+
 ## 1. ArgoCD
 ```bash
 kubectl create ns argocd
