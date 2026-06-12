@@ -34,6 +34,7 @@ Use this table while collecting evidence. Save screenshots under a local `screen
 | 12 | `screenshots/12-git-revert.png` | Git log showing revert commit and ArgoCD back to Synced | Proves rollback through Git |
 | 13 | `screenshots/13-grafana-dashboard.png` | Grafana dashboard with API request rate/success rate/latency | Optional visual proof of observability |
 | 14 | `screenshots/14-expense-tracker.png` | Expense-Tracker UI reachable via NodePort | Optional proof of 2-repo GitOps deployment |
+| 15 | `screenshots/15-teardown.png` | Terminal showing `minikube delete -p w9` completed and no `w9` profile running | Proves local project cleanup was completed |
 
 Create the folder before collecting images:
 
@@ -467,6 +468,51 @@ Take this screenshot:
 
 ![Expense Tracker UI](screenshots/14-expense-tracker.png)
 
+## Teardown Evidence
+
+Use this section after all required screenshots and evidence have been collected. This removes the local minikube cluster and all Kubernetes resources created for the project.
+
+Delete the minikube profile:
+
+```bash
+minikube delete -p w9
+```
+
+Verify the profile is gone:
+
+```bash
+minikube profile list
+kubectl config get-contexts
+```
+
+Optional Docker cleanup:
+
+```bash
+docker system prune -f
+```
+
+Only run the stronger cleanup if you are sure you do not need unused local Docker images for other work:
+
+```bash
+docker system prune -a -f
+```
+
+Expected result:
+
+- The `w9` minikube profile is deleted.
+- ArgoCD, Prometheus, Grafana, AlertManager, Argo Rollouts, API, web, and Expense-Tracker resources are removed with the cluster.
+- `kubectl` can no longer access the deleted `w9` cluster context unless another cluster is selected.
+
+Screenshot:
+
+- `screenshots/15-teardown.png`
+
+Take this screenshot:
+
+1. Terminal showing `minikube delete -p w9` finished successfully, followed by `minikube profile list` showing that the `w9` profile is no longer running or no longer present.
+
+![Teardown completed](screenshots/15-teardown.png)
+
 ## Important Lessons Learned
 
 | Problem | Root Cause | Fix |
@@ -478,3 +524,5 @@ Take this screenshot:
 | Alert did not email | Alert never fired or Gmail app password/routing issue | Check Prometheus alert state, AlertManager API, and logs |
 | Argo Rollouts chart failed on new K8s | Old chart version incompatible with K8s 1.35 | Use chart version `2.41.0` |
 | Prometheus CRD sync issue | Large CRDs exceed client-side apply annotation limit | Use `ServerSideApply=true` and server-side CRD install if needed |
+| Minikube did not recover cleanly after reboot | Docker bridge networking for the `w9` profile became stale and node egress failed | Recreate/reconnect the Docker network or restart Docker, then restart minikube |
+| ArgoCD stuck in ImagePullBackOff after restart | The minikube node could not reach registries like `quay.io` | Verify node egress with `minikube ssh -p w9 -- curl -I https://quay.io/v2/` |

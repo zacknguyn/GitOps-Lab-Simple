@@ -39,7 +39,7 @@ Argo Rollouts controller sees pod template changed
        │
        ▼
 Creates new ReplicaSet (canary) with 1 pod
-       │
+       
        ▼
 Updates Service to send 25% traffic to canary, 75% to stable
        │
